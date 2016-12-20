@@ -20,7 +20,7 @@ import os
 from datetime import datetime,timedelta,date
 import os.path
 import requests
-from app.settings import *
+from pets.settings import *
 import datetime
 
 
@@ -28,24 +28,24 @@ import datetime
 @csrf_exempt
 def registra(request):
 
-    if request.method == 'POST':
+	data_json = simplejson.dumps('icon')
 
-    	data = json.loads(request.body)
+	if request.method == 'POST':
+
+		data = json.loads(request.body)['data']
+
+		print data
 
 		for d in data:
 
-			if d == 'name':
+			if d == 'nombre':
 
-				name = data['name']
+				username = data['nombre']
 
-			if d == 'email':
+			if d == 'password':
 
-				email = data['email']
+				password = data['password']
 
-
-			if d == 'direccion':
-
-				direccion = data['direccion']
 
 
 			if d == 'nombre_mascota':
@@ -56,15 +56,21 @@ def registra(request):
 
 				raza = data['raza']
 
-			if d == 'horario':
+		
+		user = User.objects.create_user(username=username,password=password)
 
-				horario = data['horario']
-
-
-
+		user.save()
 
 
+		Mascota(raza=raza,nombre=nombre_mascota).save()
 
-        data_json = simplejson.dumps('icon')
 
-        return HttpResponse(data_json, content_type="application/json")
+
+
+
+
+		
+
+		return HttpResponse(data_json, content_type="application/json")
+
+	return HttpResponse(data_json, content_type="application/json")
