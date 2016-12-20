@@ -2,13 +2,20 @@
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desidered behavior.
+#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
 
 from django.db import models
 
+
+class Distrito(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'distrito'
 
 class Alergias(models.Model):
     nombre = models.CharField(max_length=1000, blank=True, null=True)
@@ -55,9 +62,14 @@ class AuthUser(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.CharField(max_length=254)
+    porque = models.CharField(max_length=254)
+    photo = models.CharField(max_length=254)
     is_staff = models.IntegerField()
     is_active = models.IntegerField()
     date_joined = models.DateTimeField()
+    distrito = models.IntegerField()
+    tipo = models.IntegerField()
+    direccion = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -90,6 +102,9 @@ class Caracter(models.Model):
     class Meta:
         managed = False
         db_table = 'caracter'
+
+
+
 
 
 class DjangoAdminLog(models.Model):
@@ -140,6 +155,7 @@ class Mascota(models.Model):
     raza = models.IntegerField(blank=True, null=True)
     nombre = models.CharField(max_length=1000, blank=True, null=True)
     edad = models.IntegerField(blank=True, null=True)
+    due_o = models.IntegerField(db_column='due\xf1o', blank=True, null=True)  # Field renamed to remove unsuitable characters.
 
     class Meta:
         managed = False
